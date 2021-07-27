@@ -46,3 +46,30 @@ export const signup = async (req, res) => {
     console.log(error);
   }
 };
+
+
+export const save = async (req, res) => {
+  const { userId, code } = req.body
+
+  try {
+    const user = await UserModal.findById(userId)
+    user.code = code
+    await UserModal.findByIdAndUpdate(userId, user, { new: true })
+    res.status(200).json(code)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error })
+  }
+}
+
+export const getCode = async (req, res) => {
+  const { userId } = req.body
+
+  try {
+    const user = await UserModal.findById(userId)
+    res.status(200).json(user.code)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: error })
+  }
+}
